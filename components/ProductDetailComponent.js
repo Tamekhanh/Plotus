@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, Button, Modal } from 'react-native';
 import { Card } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { addToCart } from '../redux/ActionCreator';
 
 const mapStateToProps = state => {
     return {
-        products: state.products
+        products: state.products,
+        cart: state.cart
     }
 }
 
-function RenderProduct({ product }) {
+const mapDispatchToProps = dispatch => ({
+    addToCart: (product) => dispatch(addToCart(product))
+})
+
+function RenderProduct({ product, addToCart }) {
     if (product != null) {
         return (
             <Card>
@@ -19,9 +25,23 @@ function RenderProduct({ product }) {
                 <Text style={{ margin: 10 }}>
                     {product.description}
                 </Text>
+                <Text style={{ margin: 10 }}>
+                    Serial Number: {product.serialNumber}
+                </Text>
+                <Text style={{ margin: 10 }}>
+                    Performance: {product.performance}
+                </Text>
+                <Text style={{ margin: 10 }}>
+                    Specs: {product.specs}
+                </Text>
                 <Text style={{ margin: 10, fontWeight: 'bold' }}>
                     Price: ${product.price}
                 </Text>
+                <Button
+                    title="Add to Cart"
+                    onPress={() => addToCart(product)}
+                    color="#512DA8"
+                />
             </Card>
         );
     }
@@ -37,10 +57,10 @@ class ProductDetail extends Component {
         const product = this.props.products.products.filter(product => product.id === productId)[0];
         return (
             <ScrollView>
-                <RenderProduct product={product} />
+                <RenderProduct product={product} addToCart={this.props.addToCart} />
             </ScrollView>
         );
     }
 }
 
-export default connect(mapStateToProps)(ProductDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail);

@@ -68,3 +68,18 @@ export const addPartners = (partners) => ({
     type: ActionTypes.ADD_PARTNERS,
     payload: partners
 });
+
+export const addToCart = (product) => ({
+    type: ActionTypes.ADD_TO_CART,
+    payload: product
+});
+
+export const deleteFromCart = (productId) => ({
+    type: ActionTypes.DELETE_FROM_CART,
+    payload: productId
+});
+
+export const decreaseFromCart = (productId) => ({
+    type: ActionTypes.DECREASE_FROM_CART,
+    payload: productId
+});

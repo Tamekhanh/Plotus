@@ -7,7 +7,10 @@ export const PRODUCTS = [
         label: 'Hot',
         price: '999',
         featured: true,
-        description: 'The latest iPhone with titanium design.'
+        description: 'The latest iPhone with titanium design.',
+        serialNumber: 'IP15P-TITANIUM-2024',
+        performance: 'A17 Pro chip, 6-core GPU',
+        specs: '6.1-inch Super Retina XDR display, 48MP Main camera, USB-C'
     },
     {
         id: 1,
@@ -17,7 +20,10 @@ export const PRODUCTS = [
         label: '',
         price: '899',
         featured: false,
-        description: 'AI-powered smartphone from Samsung.'
+        description: 'AI-powered smartphone from Samsung.',
+        serialNumber: 'SGS24-AI-2024',
+        performance: 'Snapdragon 8 Gen 3 for Galaxy',
+        specs: '6.2-inch Dynamic AMOLED 2X, 50MP Wide camera, 4000mAh battery'
     },
     {
         id: 2,
@@ -27,7 +33,10 @@ export const PRODUCTS = [
         label: 'New',
         price: '1099',
         featured: false,
-        description: 'Supercharged by M3 chip.'
+        description: 'Supercharged by M3 chip.',
+        serialNumber: 'MBA-M3-2024',
+        performance: 'Apple M3 chip, 8-core CPU, 10-core GPU',
+        specs: '13.6-inch Liquid Retina display, MagSafe 3, 1080p FaceTime HD camera'
     },
     {
         id: 3,
@@ -37,6 +46,113 @@ export const PRODUCTS = [
         label: '',
         price: '349',
         featured: true,
-        description: 'Industry-leading noise canceling headphones.'
+        description: 'Industry-leading noise canceling headphones.',
+        serialNumber: 'SONY-XM5-NC',
+        performance: 'Integrated Processor V1, HD Noise Canceling Processor QN1',
+        specs: '30 hours battery life, Auto NC Optimizer, Crystal clear hands-free calling'
+    },
+    {
+        id: 4,
+        name: 'iPad Pro 13"',
+        image: 'https://placehold.co/400x400/png',
+        category: 'tablets',
+        label: 'New',
+        price: '1299',
+        featured: false,
+        description: 'The ultimate iPad experience.',
+        serialNumber: 'IPAD-PRO-M4-2024',
+        performance: 'M4 chip, 10-core GPU',
+        specs: '13-inch Ultra Retina XDR, Apple Pencil Pro support'
+    },
+    {
+        id: 5,
+        name: 'Google Pixel 8 Pro',
+        image: 'https://placehold.co/400x400/png',
+        category: 'phones',
+        label: 'Sale',
+        price: '799',
+        featured: false,
+        description: 'The AI-first phone from Google.',
+        serialNumber: 'G-PIXEL8P-2023',
+        performance: 'Google Tensor G3',
+        specs: '6.7-inch Super Actua display, 50MP main camera, 7 years of updates'
+    },
+    {
+        id: 6,
+        name: 'PlayStation 5 Slim',
+        image: 'https://placehold.co/400x400/png',
+        category: 'gaming',
+        label: 'Hot',
+        price: '499',
+        featured: true,
+        description: 'Play Has No Limits.',
+        serialNumber: 'PS5-SLIM-2023',
+        performance: 'Custom AMD Zen 2 CPU, RDNA 2 GPU',
+        specs: '1TB SSD, 4K 120Hz support, DualSense controller'
+    },
+    {
+        id: 7,
+        name: 'GoPro Hero 12 Black',
+        image: 'https://placehold.co/400x400/png',
+        category: 'cameras',
+        label: '',
+        price: '399',
+        featured: false,
+        description: 'Incredible image quality, even better stabilization.',
+        serialNumber: 'GOPRO-H12-BLK',
+        performance: 'GP2 Processor',
+        specs: '5.3K60 video, 27MP photos, HyperSmooth 6.0'
+    },
+    {
+        id: 8,
+        name: 'Dyson V15 Detect',
+        image: 'https://placehold.co/400x400/png',
+        category: 'home',
+        label: 'Best Seller',
+        price: '749',
+        featured: false,
+        description: 'Most powerful, intelligent cordless vacuum.',
+        serialNumber: 'DYSON-V15-ABS',
+        performance: 'Hyperdymium motor, 240AW suction',
+        specs: 'Laser Slim Fluffy cleaner head, Piezo sensor, 60 min run time'
+    },
+    {
+        id: 9,
+        name: 'Apple Watch Ultra 2',
+        image: 'https://placehold.co/400x400/png',
+        category: 'wearables',
+        label: 'New',
+        price: '799',
+        featured: true,
+        description: 'Next level adventure.',
+        serialNumber: 'AW-ULTRA2-TI',
+        performance: 'S9 SiP, Double tap gesture',
+        specs: '49mm Titanium Case, 3000 nits brightness, 100m water resistance'
+    },
+    {
+        id: 10,
+        name: 'DJI Mini 4 Pro',
+        image: 'https://placehold.co/400x400/png',
+        category: 'drones',
+        label: '',
+        price: '759',
+        featured: false,
+        description: 'Mini to the Max.',
+        serialNumber: 'DJI-MINI4-PRO',
+        performance: 'Omnidirectional Obstacle Sensing',
+        specs: '4K/60fps HDR Video, 20km FHD Video Transmission, 34-min Flight Time'
+    },
+    {
+        id: 11,
+        name: 'Nintendo Switch OLED',
+        image: 'https://placehold.co/400x400/png',
+        category: 'gaming',
+        label: '',
+        price: '349',
+        featured: false,
+        description: 'Play anytime, anywhere, with anyone.',
+        serialNumber: 'NTD-SWITCH-OLED',
+        performance: 'NVIDIA Custom Tegra processor',
+        specs: '7-inch OLED screen, 64GB internal storage, Enhanced audio'
     }
 ];

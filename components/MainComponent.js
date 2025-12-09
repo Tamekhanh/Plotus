@@ -7,13 +7,15 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import ProductDetail from './ProductDetailComponent';
+import Partner from './PartnerComponent';
+import Cart from './CartComponent';
 
 const MenuNavigator = createStackNavigator();
 
 function MenuNavigatorScreen() {
     return (
         <MenuNavigator.Navigator
-            initialRouteName='Menu'
+            initialRouteName='MenuScreen'
             screenOptions={{
                 headerStyle: {
                     backgroundColor: '#512DA8'
@@ -25,7 +27,7 @@ function MenuNavigatorScreen() {
             }}
         >
             <MenuNavigator.Screen
-                name="Menu"
+                name="MenuScreen"
                 component={Menu}
                 options={{ title: 'Menu' }}
             />
@@ -54,11 +56,59 @@ function HomeNavigatorScreen() {
             }}
         >
             <HomeNavigator.Screen
-                name="Home"
+                name="HomeScreen"
                 component={Home}
                 options={{ title: 'Home' }}
             />
         </HomeNavigator.Navigator>
+    );
+}
+
+const PartnerNavigator = createStackNavigator();
+
+function PartnerNavigatorScreen() {
+    return (
+        <PartnerNavigator.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#512DA8'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff'
+                }
+            }}
+        >
+            <PartnerNavigator.Screen
+                name="PartnerScreen"
+                component={Partner}
+                options={{ title: 'Partners' }}
+            />
+        </PartnerNavigator.Navigator>
+    );
+}
+
+const CartNavigator = createStackNavigator();
+
+function CartNavigatorScreen() {
+    return (
+        <CartNavigator.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#512DA8'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff'
+                }
+            }}
+        >
+            <CartNavigator.Screen
+                name="CartScreen"
+                component={Cart}
+                options={{ title: 'My Cart' }}
+            />
+        </CartNavigator.Navigator>
     );
 }
 
@@ -83,6 +133,16 @@ function MainNavigatorScreen() {
                 name="Menu"
                 component={MenuNavigatorScreen}
                 options={{ title: 'Menu', drawerLabel: 'Menu' }}
+            />
+            <MainNavigator.Screen
+                name="Partner"
+                component={PartnerNavigatorScreen}
+                options={{ title: 'Partners', drawerLabel: 'Partners' }}
+            />
+            <MainNavigator.Screen
+                name="Cart"
+                component={CartNavigatorScreen}
+                options={{ title: 'My Cart', drawerLabel: 'My Cart' }}
             />
         </MainNavigator.Navigator>
     );
