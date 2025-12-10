@@ -23,8 +23,8 @@ class Cart extends Component {
         const renderCartItem = ({ item, index }) => {
             return (
                 <ListItem key={index} bottomDivider containerStyle={{ paddingVertical: 15 }}>
-                    <View>
-                        <Avatar source={{ uri: item.image }} size="medium" rounded />
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, flex: 1 }}>
+                        <Avatar source={item.image} size="medium" rounded />
                         <ListItem.Content>
                             <ListItem.Title style={{ fontWeight: 'bold', fontSize: 16 }}>{item.name}</ListItem.Title>
                             <ListItem.Subtitle style={{ color: 'gray', marginTop: 5 }}>
@@ -79,7 +79,15 @@ class Cart extends Component {
             );
         }
         else {
-            const total = this.props.cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+            const subtotal = this.props.cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+            const discount = this.props.cart.reduce((sum, item) => {
+                if (item.category === 'accessories') {
+                    return sum + (parseFloat(item.price) * item.quantity * 0.2);
+                }
+                return sum;
+            }, 0);
+            const total = subtotal - discount;
+
             return (
                 <View style={{ flex: 1, backgroundColor: '#f5f5f5' }}>
                     <FlatList
@@ -89,6 +97,20 @@ class Cart extends Component {
                         contentContainerStyle={{ paddingBottom: 20 }}
                     />
                     <View style={{ padding: 20, backgroundColor: 'white', borderTopWidth: 1, borderTopColor: '#e1e1e1', elevation: 20, shadowColor: '#000', shadowOffset: { width: 0, height: -2 }, shadowOpacity: 0.1, shadowRadius: 4 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5, alignItems: 'center' }}>
+                            <Text style={{ fontSize: 16, color: 'gray' }}>Subtotal:</Text>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'black' }}>
+                                ${subtotal.toFixed(2)}
+                            </Text>
+                        </View>
+                        {discount > 0 && (
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5, alignItems: 'center' }}>
+                                <Text style={{ fontSize: 16, color: 'green' }}>Discount (Accessories 20%):</Text>
+                                <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'green' }}>
+                                    -${discount.toFixed(2)}
+                                </Text>
+                            </View>
+                        )}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15, alignItems: 'center' }}>
                             <Text style={{ fontSize: 18, color: 'gray' }}>Total:</Text>
                             <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#512DA8' }}>

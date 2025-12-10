@@ -2,7 +2,7 @@ export const PRODUCTS = [
     {
         id: 0,
         name: 'iPhone 15 Pro',
-        image: 'https://placehold.co/400x400/png',
+        image: require('./image/product/IPhone15Pro.jpg'),
         category: 'phones',
         label: 'Hot',
         price: '999',
@@ -15,7 +15,7 @@ export const PRODUCTS = [
     {
         id: 1,
         name: 'Samsung Galaxy S24',
-        image: 'https://placehold.co/400x400/png',
+        image: require('./image/product/SamsungGalaxyS24.jpg'),
         category: 'phones',
         label: '',
         price: '899',
@@ -28,7 +28,7 @@ export const PRODUCTS = [
     {
         id: 2,
         name: 'MacBook Air M3',
-        image: 'https://placehold.co/400x400/png',
+        image: require('./image/product/MacBookAirM3.jpg'),
         category: 'laptops',
         label: 'New',
         price: '1099',
@@ -41,7 +41,7 @@ export const PRODUCTS = [
     {
         id: 3,
         name: 'Sony WH-1000XM5',
-        image: 'https://placehold.co/400x400/png',
+        image: require('./image/product/SonyWH-1000XM5.png'),
         category: 'accessories',
         label: '',
         price: '349',
@@ -54,7 +54,7 @@ export const PRODUCTS = [
     {
         id: 4,
         name: 'iPad Pro 13"',
-        image: 'https://placehold.co/400x400/png',
+        image: require('./image/product/IPadPro13.jpg'),
         category: 'tablets',
         label: 'New',
         price: '1299',
@@ -67,7 +67,7 @@ export const PRODUCTS = [
     {
         id: 5,
         name: 'Google Pixel 8 Pro',
-        image: 'https://placehold.co/400x400/png',
+        image: { uri: 'https://placehold.co/400x400/png' },
         category: 'phones',
         label: 'Sale',
         price: '799',
@@ -80,7 +80,7 @@ export const PRODUCTS = [
     {
         id: 6,
         name: 'PlayStation 5 Slim',
-        image: 'https://placehold.co/400x400/png',
+        image: { uri: 'https://placehold.co/400x400/png' },
         category: 'gaming',
         label: 'Hot',
         price: '499',
@@ -93,7 +93,7 @@ export const PRODUCTS = [
     {
         id: 7,
         name: 'GoPro Hero 12 Black',
-        image: 'https://placehold.co/400x400/png',
+        image: { uri: 'https://placehold.co/400x400/png' },
         category: 'cameras',
         label: '',
         price: '399',
@@ -106,7 +106,7 @@ export const PRODUCTS = [
     {
         id: 8,
         name: 'Dyson V15 Detect',
-        image: 'https://placehold.co/400x400/png',
+        image: { uri: 'https://placehold.co/400x400/png' },
         category: 'home',
         label: 'Best Seller',
         price: '749',
@@ -119,7 +119,7 @@ export const PRODUCTS = [
     {
         id: 9,
         name: 'Apple Watch Ultra 2',
-        image: 'https://placehold.co/400x400/png',
+        image: { uri: 'https://placehold.co/400x400/png' },
         category: 'wearables',
         label: 'New',
         price: '799',
@@ -132,7 +132,7 @@ export const PRODUCTS = [
     {
         id: 10,
         name: 'DJI Mini 4 Pro',
-        image: 'https://placehold.co/400x400/png',
+        image: { uri: 'https://placehold.co/400x400/png' },
         category: 'drones',
         label: '',
         price: '759',
@@ -145,7 +145,7 @@ export const PRODUCTS = [
     {
         id: 11,
         name: 'Nintendo Switch OLED',
-        image: 'https://placehold.co/400x400/png',
+        image: { uri: 'https://placehold.co/400x400/png' },
         category: 'gaming',
         label: '',
         price: '349',

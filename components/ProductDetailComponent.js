@@ -21,7 +21,7 @@ function RenderProduct({ product, addToCart }) {
             <Card>
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Divider />
-                <Card.Image source={{ uri: product.image }} />
+                <Card.Image source={product.image} />
                 <Text style={{ margin: 10 }}>
                     {product.description}
                 </Text>

@@ -21,10 +21,10 @@ class Partner extends Component {
         const renderPartnerItem = ({ item, index }) => {
             return (
                 <ListItem key={index} bottomDivider>
-                    <View>
-                        <Avatar source={{ uri: item.image }} />
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                        <Avatar source={item.image} size="medium" rounded />
                         <ListItem.Content>
-                            <ListItem.Title>{item.name}</ListItem.Title>
+                            <ListItem.Title style={{ fontWeight: 'bold' }}>{item.name}</ListItem.Title>
                             <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
                         </ListItem.Content>
                     </View>

@@ -41,7 +41,21 @@ function RenderItem(props) {
                 <Card>
                     <Card.Title>{item.name}</Card.Title>
                     <Card.Divider />
-                    <Card.Image source={{ uri: item.image }} />
+                    <View style={{ position: 'relative' }}>
+                        <Card.Image source={item.image} resizeMode="contain" />
+                        {item.label ? (
+                            <View style={{
+                                position: 'absolute',
+                                top: 10,
+                                right: 10,
+                                backgroundColor: item.label === 'Sale' ? 'red' : '#512DA8',
+                                padding: 5,
+                                borderRadius: 5
+                            }}>
+                                <Text style={{ color: 'white', fontWeight: 'bold' }}>{item.label}</Text>
+                            </View>
+                        ) : null}
+                    </View>
                     <Text style={{ margin: 10 }}>
                         {item.description}
                     </Text>
@@ -64,7 +78,7 @@ class Home extends Component {
 
     render() {
         return (
-            <ScrollView>
+            <ScrollView style={{ paddingBottom: 24 }}>
                 <RenderItem item={this.props.products.products.filter((product) => product.featured)[0]}
                     isLoading={this.props.products.isLoading}
                     errMess={this.props.products.errMess} />

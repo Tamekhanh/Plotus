@@ -29,7 +29,7 @@ class Menu extends Component {
             return (
                 <ListItem key={index} bottomDivider onPress={() => this.props.navigation.navigate('ProductDetail', { productId: item.id })}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' , gap: 10}}>
-                        <Avatar source={{ uri: item.image }} />
+                        <Avatar source={item.image} />
                         <ListItem.Content>
                             <ListItem.Title style={{ fontWeight: 'bold' }}>{item.name}</ListItem.Title>
                             <ListItem.Subtitle>{item.description}</ListItem.Subtitle>

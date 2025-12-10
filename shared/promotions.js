@@ -2,7 +2,7 @@ export const PROMOTIONS = [
     {
         id: 0,
         name: 'Weekend Sale',
-        image: 'https://placehold.co/400x400/png',
+        image: { uri: 'https://placehold.co/400x400/png' },
         label: 'New',
         price: '19.99',
         featured: true,
