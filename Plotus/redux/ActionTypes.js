@@ -13,3 +13,8 @@ export const PARTNERS_FAILED = 'PARTNERS_FAILED';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const DELETE_FROM_CART = 'DELETE_FROM_CART';
 export const DECREASE_FROM_CART = 'DECREASE_FROM_CART';
+export const CLEAR_CART = 'CLEAR_CART';
+
+export const ORDERS_LOADING = 'ORDERS_LOADING';
+export const ADD_ORDERS = 'ADD_ORDERS';
+export const ORDERS_FAILED = 'ORDERS_FAILED';

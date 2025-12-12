@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList, Text, Alert, TouchableOpacity } from 'react-native';
 import { ListItem, Avatar, Button, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { deleteFromCart, addToCart, decreaseFromCart } from '../redux/ActionCreator';
+import { deleteFromCart, addToCart, decreaseFromCart, postOrder } from '../redux/ActionCreator';
 import { baseUrl } from '../shared/baseUrl';
 
 const mapStateToProps = state => {
@@ -14,7 +14,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     deleteFromCart: (productId) => dispatch(deleteFromCart(productId)),
     addToCart: (product) => dispatch(addToCart(product)),
-    decreaseFromCart: (productId) => dispatch(decreaseFromCart(productId))
+    decreaseFromCart: (productId) => dispatch(decreaseFromCart(productId)),
+    postOrder: (cart) => dispatch(postOrder(cart))
 })
 
 class Cart extends Component {
@@ -122,7 +123,17 @@ class Cart extends Component {
                             title="CHECKOUT"
                             buttonStyle={{ backgroundColor: '#512DA8', borderRadius: 10, paddingVertical: 12 }}
                             titleStyle={{ fontWeight: 'bold', fontSize: 18 }}
-                            onPress={() => Alert.alert('Checkout', 'Proceeding to checkout...')}
+                            onPress={() => {
+                                Alert.alert(
+                                    'Confirm Order',
+                                    'Do you want to place this order?',
+                                    [
+                                        { text: 'Cancel', style: 'cancel' },
+                                        { text: 'OK', onPress: () => this.props.postOrder(this.props.cart) }
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }}
                         />
                     </View>
                 </View>

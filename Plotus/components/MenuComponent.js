@@ -122,6 +122,15 @@ class Menu extends Component {
                         round
                         containerStyle={{ backgroundColor: 'white', borderBottomColor: 'transparent', borderTopColor: 'transparent' }}
                         inputContainerStyle={{ backgroundColor: '#f2f2f2' }}
+                        searchIcon={<Icon name='search' size={24} color='black' />}
+                        clearIcon={
+                            <Icon
+                                name='close'
+                                size={24}
+                                color='black'
+                                onPress={() => this.updateSearch('')}
+                            />
+                        }
                     />
                     <View style={{ height: 50 }}>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 10, alignItems: 'center' }}>
@@ -183,32 +192,46 @@ class Menu extends Component {
                             <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>Add New Product</Text>
                             <Input
                                 placeholder='Product Name'
-                                leftIcon={{ type: 'font-awesome', name: 'tag' }}
+                                leftIcon={<Icon type='font-awesome' name='tag' size={24} color='black' />}
                                 onChangeText={(name) => this.setState({ name })}
                                 value={this.state.name}
                             />
                             <Input
                                 placeholder='Description'
-                                leftIcon={{ type: 'font-awesome', name: 'info' }}
+                                leftIcon={<Icon type='font-awesome' name='info' size={24} color='black' />}
                                 onChangeText={(description) => this.setState({ description })}
                                 value={this.state.description}
                             />
                             <Input
                                 placeholder='Price'
-                                leftIcon={{ type: 'font-awesome', name: 'dollar' }}
+                                leftIcon={<Icon type='font-awesome' name='dollar' size={24} color='black' />}
                                 onChangeText={(price) => this.setState({ price })}
                                 value={this.state.price}
                                 keyboardType='numeric'
                             />
-                            <Input
-                                placeholder='Category'
-                                leftIcon={{ type: 'font-awesome', name: 'list' }}
-                                onChangeText={(category) => this.setState({ category })}
-                                value={this.state.category}
-                            />
+                            <Text style={{ marginLeft: 10, fontSize: 16, fontWeight: 'bold', color: 'gray' }}>Select Category:</Text>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: 10 }}>
+                                {['phones', 'laptops', 'accessories', 'tablets', 'gaming', 'cameras', 'home', 'wearables', 'drones'].map((cat, index) => (
+                                    <TouchableOpacity
+                                        key={index}
+                                        onPress={() => this.setState({ category: cat })}
+                                        style={{
+                                            backgroundColor: this.state.category === cat ? '#512DA8' : 'white',
+                                            borderColor: '#512DA8',
+                                            borderWidth: 1,
+                                            borderRadius: 20,
+                                            paddingHorizontal: 15,
+                                            paddingVertical: 8,
+                                            marginRight: 10
+                                        }}
+                                    >
+                                        <Text style={{ color: this.state.category === cat ? 'white' : '#512DA8' }}>{cat}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </ScrollView>
                             <Input
                                 placeholder='Image URL (relative or absolute)'
-                                leftIcon={{ type: 'font-awesome', name: 'image' }}
+                                leftIcon={<Icon type='font-awesome' name='image' size={24} color='black' />}
                                 onChangeText={(image) => this.setState({ image })}
                                 value={this.state.image}
                             />

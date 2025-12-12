@@ -124,6 +124,81 @@ export const decreaseFromCart = (productId) => ({
     payload: productId
 });
 
+export const clearCart = () => ({
+    type: ActionTypes.CLEAR_CART
+});
+
+export const fetchOrders = () => (dispatch) => {
+    dispatch(ordersLoading());
+
+    return fetch(baseUrl + 'orders')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(orders => dispatch(addOrders(orders)))
+        .catch(error => dispatch(ordersFailed(error.message)));
+};
+
+export const ordersLoading = () => ({
+    type: ActionTypes.ORDERS_LOADING
+});
+
+export const ordersFailed = (errmess) => ({
+    type: ActionTypes.ORDERS_FAILED,
+    payload: errmess
+});
+
+export const addOrders = (orders) => ({
+    type: ActionTypes.ADD_ORDERS,
+    payload: orders
+});
+
+export const postOrder = (cart) => (dispatch) => {
+    const newOrder = {
+        date: new Date().toISOString(),
+        items: cart,
+        total: cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0).toFixed(2)
+    };
+
+    return fetch(baseUrl + 'orders', {
+        method: 'POST',
+        body: JSON.stringify(newOrder),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => { throw error; })
+    .then(response => response.json())
+    .then(response => {
+        alert('Order placed successfully!');
+        dispatch(clearCart());
+    })
+    .catch(error => {
+        console.log('Post order ', error.message);
+        alert('Your order could not be placed\nError: ' + error.message);
+    });
+};
+
 export const postProduct = (name, description, price, image, category) => (dispatch) => {
     const newProduct = {
         name: name,

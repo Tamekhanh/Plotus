@@ -9,6 +9,7 @@ import Menu from './MenuComponent';
 import ProductDetail from './ProductDetailComponent';
 import Partner from './PartnerComponent';
 import Cart from './CartComponent';
+import Order from './OrderComponent';
 
 const MenuNavigator = createStackNavigator();
 
@@ -112,6 +113,30 @@ function CartNavigatorScreen() {
     );
 }
 
+const OrderNavigator = createStackNavigator();
+
+function OrderNavigatorScreen() {
+    return (
+        <OrderNavigator.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#512DA8'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: '#fff'
+                }
+            }}
+        >
+            <OrderNavigator.Screen
+                name="OrderScreen"
+                component={Order}
+                options={{ title: 'Orders' }}
+            />
+        </OrderNavigator.Navigator>
+    );
+}
+
 const MainNavigator = createDrawerNavigator();
 
 function MainNavigatorScreen() {
@@ -143,6 +168,11 @@ function MainNavigatorScreen() {
                 name="Cart"
                 component={CartNavigatorScreen}
                 options={{ title: 'My Cart', drawerLabel: 'My Cart' }}
+            />
+            <MainNavigator.Screen
+                name="Order"
+                component={OrderNavigatorScreen}
+                options={{ title: 'Orders', drawerLabel: 'Orders' }}
             />
         </MainNavigator.Navigator>
     );

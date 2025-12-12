@@ -5,6 +5,7 @@ import { products } from './products';
 import { promotions } from './promotions';
 import { partners } from './partners';
 import { cart } from './cart';
+import { orders } from './orders';
 
 export const ConfigureStore = () => {
     const store = createStore(
@@ -12,7 +13,8 @@ export const ConfigureStore = () => {
             products,
             promotions,
             partners,
-            cart
+            cart,
+            orders
         }),
         applyMiddleware(thunk, logger)
     );

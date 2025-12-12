@@ -24,6 +24,9 @@ export const cart = (state = [], action) => {
                     : item
             ).filter(item => item.quantity > 0);
 
+        case ActionTypes.CLEAR_CART:
+            return [];
+
         default:
             return state;
     }
