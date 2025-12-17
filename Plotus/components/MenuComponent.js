@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, ScrollView, StyleSheet, TouchableOpacity, Modal, Alert } from 'react-native';
+import { View, FlatList, Text, ScrollView, StyleSheet, TouchableOpacity, Modal, Alert, RefreshControl } from 'react-native';
 import { ListItem, Avatar, SearchBar, Icon, Button, Input, CheckBox } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
-import { deleteProduct, postProduct, updateProduct } from '../redux/ActionCreator';
+import { deleteProduct, postProduct, updateProduct, fetchProducts } from '../redux/ActionCreator';
 
 const mapStateToProps = state => {
     return {
@@ -14,7 +14,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     deleteProduct: (productId) => dispatch(deleteProduct(productId)),
     postProduct: (name, description, price, image, category, brand) => dispatch(postProduct(name, description, price, image, category, brand)),
-    updateProduct: (productId, name, description, price, image, category, brand) => dispatch(updateProduct(productId, name, description, price, image, category, brand))
+    updateProduct: (productId, name, description, price, image, category, brand) => dispatch(updateProduct(productId, name, description, price, image, category, brand)),
+    fetchProducts: () => dispatch(fetchProducts())
 })
 
 class Menu extends Component {
@@ -139,7 +140,7 @@ class Menu extends Component {
             );
         };
 
-        if (this.props.products.isLoading) {
+        if (this.props.products.isLoading && this.props.products.products.length === 0) {
             return (
                 <View>
                     <Text>Loading...</Text>
@@ -215,6 +216,12 @@ class Menu extends Component {
                         data={filteredProducts}
                         renderItem={renderMenuItem}
                         keyExtractor={item => item.id.toString()}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.props.products.isLoading}
+                                onRefresh={() => this.props.fetchProducts()}
+                            />
+                        }
                     />
                     <TouchableOpacity
                         style={{

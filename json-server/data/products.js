@@ -72,7 +72,7 @@ module.exports = [
   {
     "id": 5,
     "name": "Google Pixel 8 Pro",
-    "image": "https://placehold.co/400x400/png",
+    "image": "images/product/GooglePixel8Pro.jpg",
     "category": "phones",
     "brand": "Google",
     "label": "Sale",
@@ -86,7 +86,7 @@ module.exports = [
   {
     "id": 6,
     "name": "PlayStation 5 Slim",
-    "image": "https://placehold.co/400x400/png",
+    "image": "images/product/PlayStation5Slim.jpg",
     "category": "gaming",
     "brand": "Sony",
     "label": "Hot",
@@ -100,7 +100,7 @@ module.exports = [
   {
     "id": 7,
     "name": "GoPro Hero 12 Black",
-    "image": "https://placehold.co/400x400/png",
+    "image": "images/product/GoProHero12Black.jpg",
     "category": "cameras",
     "brand": "GoPro",
     "label": "",
@@ -114,7 +114,7 @@ module.exports = [
   {
     "id": 8,
     "name": "Dyson V15 Detect",
-    "image": "https://placehold.co/400x400/png",
+    "image": "images/product/DysonV15Detect.jpg",
     "category": "home",
     "brand": "Dyson",
     "label": "Best Seller",
@@ -128,7 +128,7 @@ module.exports = [
   {
     "id": 9,
     "name": "Apple Watch Ultra 2",
-    "image": "https://placehold.co/400x400/png",
+    "image": "images/product/AppleWatchUltra2.jpg",
     "category": "wearables",
     "brand": "Apple",
     "label": "New",
@@ -142,7 +142,7 @@ module.exports = [
   {
     "id": 10,
     "name": "DJI Mini 4 Pro",
-    "image": "https://placehold.co/400x400/png",
+    "image": "images/product/DJIMini4Pro.jpg",
     "category": "drones",
     "brand": "DJI",
     "label": "",
@@ -156,7 +156,7 @@ module.exports = [
   {
     "id": 11,
     "name": "Nintendo Switch OLED",
-    "image": "https://placehold.co/400x400/png",
+    "image": "images/product/NintendoSwitchOLED.jpg",
     "category": "gaming",
     "brand": "Nintendo",
     "label": "",

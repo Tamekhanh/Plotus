@@ -2,7 +2,7 @@ module.exports = [
   {
     "id": 0,
     "name": "Weekend Sale",
-    "image": "https://placehold.co/400x400/png",
+    "image": "images/event/WeekendSale.jpg",
     "label": "New",
     "price": "19.99",
     "featured": true,

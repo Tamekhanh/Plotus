@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, TouchableOpacity, Modal, StyleSheet, ScrollView } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, Modal, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { ListItem, Card, Icon, Button, CheckBox } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { fetchOrders } from '../redux/ActionCreator';
@@ -49,7 +49,7 @@ class Order extends Component {
             );
         };
 
-        if (this.props.orders.isLoading) {
+        if (this.props.orders.isLoading && this.props.orders.orders.length === 0) {
             return (
                 <View>
                     <Text>Loading...</Text>
@@ -91,6 +91,12 @@ class Order extends Component {
                         data={filteredOrders}
                         renderItem={renderOrderItem}
                         keyExtractor={item => item.id.toString()}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.props.orders.isLoading}
+                                onRefresh={() => this.props.fetchOrders()}
+                            />
+                        }
                     />
                     <Modal
                         animationType={'slide'}

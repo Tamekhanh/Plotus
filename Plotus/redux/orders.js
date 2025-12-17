@@ -6,7 +6,7 @@ export const orders = (state = { isLoading: true, errMess: null, orders: [] }, a
             return { ...state, isLoading: false, errMess: null, orders: action.payload };
 
         case ActionTypes.ORDERS_LOADING:
-            return { ...state, isLoading: true, errMess: null, orders: [] };
+            return { ...state, isLoading: true, errMess: null };
 
         case ActionTypes.ORDERS_FAILED:
             return { ...state, isLoading: false, errMess: action.payload };
