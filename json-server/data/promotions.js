@@ -2,7 +2,7 @@ module.exports = [
   {
     "id": 0,
     "name": "Weekend Sale",
-    "image": "images/event/WeekendSale.jpg",
+    "imageId": 0,
     "label": "New",
     "price": "19.99",
     "featured": true,

@@ -3,7 +3,7 @@ import { Text, View, ScrollView, Button, Modal, Alert } from 'react-native';
 import { Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { addToCart } from '../redux/ActionCreator';
-import { baseUrl } from '../shared/baseUrl';
+import { baseUrl, imageUrl } from '../shared/baseUrl';
 
 const mapStateToProps = state => {
     return {
@@ -22,7 +22,7 @@ function RenderProduct({ product, addToCart }) {
             <Card>
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Divider />
-                <Card.Image source={{ uri: product.image.startsWith('http') ? product.image : baseUrl + product.image }} style={{ resizeMode: 'center', height: 300 }} />
+                <Card.Image source={{ uri: imageUrl + product.imageId + '.jpg' }} style={{ resizeMode: 'center', height: 300 }} />
                 <Text style={{ margin: 10 }}>
                     {product.description}
                 </Text>

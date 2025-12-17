@@ -3,7 +3,7 @@ import { View, FlatList, Text } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { fetchPartners } from '../redux/ActionCreator';
-import { baseUrl } from '../shared/baseUrl';
+import { baseUrl, partnerImageUrl } from '../shared/baseUrl';
 
 const mapStateToProps = state => {
     return {
@@ -23,7 +23,7 @@ class Partner extends Component {
             return (
                 <ListItem key={index} bottomDivider>
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                        <Avatar source={{ uri: item.image.startsWith('http') ? item.image : baseUrl + item.image }} size="medium" rounded />
+                        <Avatar source={{ uri: partnerImageUrl + item.imageId + '.jpg' }} size="medium" rounded />
                         <ListItem.Content>
                             <ListItem.Title style={{ fontWeight: 'bold' }}>{item.name}</ListItem.Title>
                             <ListItem.Subtitle>{item.description}</ListItem.Subtitle>

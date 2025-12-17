@@ -2,7 +2,7 @@ module.exports = [
   {
     "id": 0,
     "name": "iPhone 15 Pro",
-    "image": "images/product/IPhone15Pro.jpg",
+    "imageId": 0,
     "category": "phones",
     "brand": "Apple",
     "label": "Hot",
@@ -16,7 +16,7 @@ module.exports = [
   {
     "id": 1,
     "name": "Samsung Galaxy S24",
-    "image": "images/product/SamsungGalaxyS24.jpg",
+    "imageId": 1,
     "category": "phones",
     "brand": "Samsung",
     "label": "",
@@ -30,7 +30,7 @@ module.exports = [
   {
     "id": 2,
     "name": "MacBook Air M3",
-    "image": "images/product/MacBookAirM3.jpg",
+    "imageId": 2,
     "category": "laptops",
     "brand": "Apple",
     "label": "New",
@@ -44,7 +44,7 @@ module.exports = [
   {
     "id": 3,
     "name": "Sony WH-1000XM5",
-    "image": "images/product/SonyWH-1000XM5.png",
+    "imageId": 3,
     "category": "accessories",
     "brand": "Sony",
     "label": "",
@@ -58,7 +58,7 @@ module.exports = [
   {
     "id": 4,
     "name": "iPad Pro 13\"",
-    "image": "images/product/IPadPro13.jpg",
+    "imageId": 4,
     "category": "tablets",
     "brand": "Apple",
     "label": "New",
@@ -72,7 +72,7 @@ module.exports = [
   {
     "id": 5,
     "name": "Google Pixel 8 Pro",
-    "image": "images/product/GooglePixel8Pro.jpg",
+    "imageId": 5,
     "category": "phones",
     "brand": "Google",
     "label": "Sale",
@@ -86,7 +86,7 @@ module.exports = [
   {
     "id": 6,
     "name": "PlayStation 5 Slim",
-    "image": "images/product/PlayStation5Slim.jpg",
+    "imageId": 6,
     "category": "gaming",
     "brand": "Sony",
     "label": "Hot",
@@ -100,7 +100,7 @@ module.exports = [
   {
     "id": 7,
     "name": "GoPro Hero 12 Black",
-    "image": "images/product/GoProHero12Black.jpg",
+    "imageId": 7,
     "category": "cameras",
     "brand": "GoPro",
     "label": "",
@@ -114,7 +114,7 @@ module.exports = [
   {
     "id": 8,
     "name": "Dyson V15 Detect",
-    "image": "images/product/DysonV15Detect.jpg",
+    "imageId": 8,
     "category": "home",
     "brand": "Dyson",
     "label": "Best Seller",
@@ -128,7 +128,7 @@ module.exports = [
   {
     "id": 9,
     "name": "Apple Watch Ultra 2",
-    "image": "images/product/AppleWatchUltra2.jpg",
+    "imageId": 9,
     "category": "wearables",
     "brand": "Apple",
     "label": "New",
@@ -142,7 +142,7 @@ module.exports = [
   {
     "id": 10,
     "name": "DJI Mini 4 Pro",
-    "image": "images/product/DJIMini4Pro.jpg",
+    "imageId": 10,
     "category": "drones",
     "brand": "DJI",
     "label": "",
@@ -156,7 +156,7 @@ module.exports = [
   {
     "id": 11,
     "name": "Nintendo Switch OLED",
-    "image": "images/product/NintendoSwitchOLED.jpg",
+    "imageId": 11,
     "category": "gaming",
     "brand": "Nintendo",
     "label": "",

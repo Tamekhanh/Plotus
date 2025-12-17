@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, FlatList, ScrollView, StyleSheet, Alert } from 'react-native';
 import { Card, Icon, ListItem, Avatar, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { baseUrl } from '../shared/baseUrl';
+import { baseUrl, imageUrl } from '../shared/baseUrl';
 import { confirmOrder, cancelOrder } from '../redux/ActionCreator';
 
 const mapStateToProps = state => {
@@ -36,7 +36,7 @@ class OrderDetail extends Component {
             return (
                 <ListItem key={index} bottomDivider>
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1, justifyContent: 'space-between' }}>
-                        <Avatar source={{ uri: item.image.startsWith('http') ? item.image : baseUrl + item.image }} />
+                        <Avatar source={{ uri: imageUrl + item.imageId + '.jpg' }} />
                     
                     <ListItem.Content>
                         <ListItem.Title>{item.name}</ListItem.Title>

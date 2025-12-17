@@ -3,7 +3,7 @@ import { View, FlatList, Text, Alert, TouchableOpacity } from 'react-native';
 import { ListItem, Avatar, Button, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { deleteFromCart, addToCart, decreaseFromCart, postOrder } from '../redux/ActionCreator';
-import { baseUrl } from '../shared/baseUrl';
+import { baseUrl, imageUrl } from '../shared/baseUrl';
 
 const mapStateToProps = state => {
     return {
@@ -26,7 +26,7 @@ class Cart extends Component {
             return (
                 <ListItem key={index} bottomDivider containerStyle={{ paddingVertical: 15 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, flex: 1 }}>
-                        <Avatar source={{ uri: item.image.startsWith('http') ? item.image : baseUrl + item.image }} size="medium" rounded />
+                        <Avatar source={{ uri: imageUrl + item.imageId + '.jpg' }} size="medium" rounded />
                         <ListItem.Content>
                             <ListItem.Title style={{ fontWeight: 'bold', fontSize: 16 }}>{item.name}</ListItem.Title>
                             <ListItem.Subtitle style={{ color: 'gray', marginTop: 5 }}>

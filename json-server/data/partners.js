@@ -2,28 +2,28 @@ module.exports = [
   {
     "id": 0,
     "name": "Apple",
-    "image": "images/partner/apple.jpg",
+    "imageId": 0,
     "featured": false,
     "description": "Think Different."
   },
   {
     "id": 1,
     "name": "Samsung",
-    "image": "images/partner/samsung.png",
+    "imageId": 1,
     "featured": false,
     "description": "Inspire the World, Create the Future."
   },
   {
     "id": 2,
     "name": "Sony",
-    "image": "images/partner/sony.png",
+    "imageId": 2,
     "featured": false,
     "description": "Be Moved."
   },
   {
     "id": 3,
     "name": "Google",
-    "image": "images/partner/google.png",
+    "imageId": 3,
     "featured": true,
     "description": "Don't be evil."
   }

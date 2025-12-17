@@ -8,14 +8,14 @@ module.exports = [
             {
                 "id": 0,
                 "name": "iPhone 15 Pro",
-                "image": "images/product/IPhone15Pro.jpg",
+                "imageId": 0,
                 "price": 999,
                 "quantity": 1
             },
             {
                 "id": 1,
                 "name": "Samsung Galaxy S24",
-                "image": "images/product/SamsungGalaxyS24.jpg",
+                "imageId": 1,
                 "price": 899,
                 "quantity": 1
             }
@@ -30,7 +30,7 @@ module.exports = [
             {
                 "id": 3,
                 "name": "Sony WH-1000XM5",
-                "image": "images/product/SonyWH-1000XM5.png",
+                "imageId": 3,
                 "price": 349,
                 "quantity": 1
             }

@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { View, FlatList, Text, ScrollView, StyleSheet, TouchableOpacity, Modal, Alert, RefreshControl } from 'react-native';
 import { ListItem, Avatar, SearchBar, Icon, Button, Input, CheckBox } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { baseUrl } from '../shared/baseUrl';
+import { baseUrl, imageUrl } from '../shared/baseUrl';
 import { deleteProduct, postProduct, updateProduct, fetchProducts } from '../redux/ActionCreator';
+
 
 const mapStateToProps = state => {
     return {
@@ -13,8 +14,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     deleteProduct: (productId) => dispatch(deleteProduct(productId)),
-    postProduct: (name, description, price, image, category, brand) => dispatch(postProduct(name, description, price, image, category, brand)),
-    updateProduct: (productId, name, description, price, image, category, brand) => dispatch(updateProduct(productId, name, description, price, image, category, brand)),
+    postProduct: (name, description, price, imageId, category, brand) => dispatch(postProduct(name, description, price, imageId, category, brand)),
+    updateProduct: (productId, name, description, price, imageId, category, brand) => dispatch(updateProduct(productId, name, description, price, imageId, category, brand)),
     fetchProducts: () => dispatch(fetchProducts())
 })
 
@@ -31,7 +32,7 @@ class Menu extends Component {
             name: '',
             description: '',
             price: '',
-            image: 'images/product/IPhone15Pro.jpg', // Default or placeholder
+            imageId: 0, // Default or placeholder
             category: 'phones',
             brand: 'Apple',
             isEditing: false,
@@ -52,7 +53,7 @@ class Menu extends Component {
             name: '',
             description: '',
             price: '',
-            image: 'images/product/IPhone15Pro.jpg',
+            imageId: 0,
             category: 'phones',
             brand: 'Apple',
             showModal: false,
@@ -63,9 +64,9 @@ class Menu extends Component {
 
     handleSubmitProduct() {
         if (this.state.isEditing) {
-            this.props.updateProduct(this.state.editingId, this.state.name, this.state.description, this.state.price, this.state.image, this.state.category, this.state.brand);
+            this.props.updateProduct(this.state.editingId, this.state.name, this.state.description, this.state.price, this.state.imageId, this.state.category, this.state.brand);
         } else {
-            this.props.postProduct(this.state.name, this.state.description, this.state.price, this.state.image, this.state.category, this.state.brand);
+            this.props.postProduct(this.state.name, this.state.description, this.state.price, this.state.imageId, this.state.category, this.state.brand);
         }
         this.resetForm();
     }
@@ -75,7 +76,7 @@ class Menu extends Component {
             name: item.name,
             description: item.description,
             price: item.price.toString(),
-            image: item.image,
+            imageId: item.imageId,
             category: item.category,
             brand: item.brand || '',
             showModal: true,
@@ -115,7 +116,7 @@ class Menu extends Component {
                     onLongPress={() => this.openEditModal(item)}
                 >
                     <View style={{ flexDirection: 'row', alignItems: 'center' , gap: 10, flex: 1}}>
-                        <Avatar source={{ uri: item.image.startsWith('http') ? item.image : baseUrl + item.image }} />
+                        <Avatar source={{ uri: imageUrl + item.imageId + '.jpg' }} />
                         <ListItem.Content>
                             <ListItem.Title style={{ fontWeight: 'bold' }}>{item.name}</ListItem.Title>
                             <ListItem.Subtitle numberOfLines={1}>{item.description}</ListItem.Subtitle>
