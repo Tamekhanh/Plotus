@@ -26,6 +26,7 @@ class Cart extends Component {
         this.state = {
             isScannerVisible: false,
             isCheckoutModalVisible: false,
+            isQRModalVisible: false,
             paymentMethod: 'Cash',
             deliveryMethod: 'At Store',
             address: '',
@@ -37,15 +38,15 @@ class Cart extends Component {
         this.setState({ isScannerVisible: false });
         const scannedData = data.trim();
         const product = this.props.products.products.find(p => p.id.toString() === scannedData || p.serialNumber === scannedData);
-        
+
         if (product) {
             const cartItem = this.props.cart.find(c => c.id === product.id);
             const currentQty = cartItem ? cartItem.quantity : 0;
             const stock = parseInt(product.quantity);
 
             if (currentQty >= stock) {
-                 Alert.alert('Error', 'Stock limit reached');
-                 return;
+                Alert.alert('Error', 'Stock limit reached');
+                return;
             }
 
             this.props.addToCart(product);
@@ -58,8 +59,8 @@ class Cart extends Component {
     render() {
 
         const renderCartItem = ({ item, index }) => {
-            const imageSource = (item.image && (item.image.startsWith('file://') || item.image.startsWith('http'))) 
-                ? { uri: item.image } 
+            const imageSource = (item.image && (item.image.startsWith('file://') || item.image.startsWith('http')))
+                ? { uri: item.image }
                 : { uri: imageUrl + item.imageId + '.jpg' };
 
             return (
@@ -79,7 +80,7 @@ class Cart extends Component {
                                 <TouchableOpacity onPress={() => {
                                     const productInStore = this.props.products.products.find(p => p.id === item.id);
                                     const stock = productInStore ? parseInt(productInStore.quantity) : 0;
-                                    
+
                                     if (item.quantity >= stock) {
                                         Alert.alert('Limit Reached', 'Cannot add more than available stock');
                                         return;
@@ -202,7 +203,7 @@ class Cart extends Component {
                             <View style={{ width: '90%', backgroundColor: 'white', borderRadius: 20, padding: 20, maxHeight: '80%' }}>
                                 <ScrollView>
                                     <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>Checkout</Text>
-                                    
+
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Payment Method</Text>
                                     <CheckBox
                                         title='Cash'
@@ -214,10 +215,16 @@ class Cart extends Component {
                                     <CheckBox
                                         title='Bank Transfer'
                                         checked={this.state.paymentMethod === 'Bank Transfer'}
-                                        onPress={() => this.setState({ paymentMethod: 'Bank Transfer' })}
+                                        onPress={() =>
+                                            this.setState({
+                                                paymentMethod: 'Bank Transfer',
+                                                isQRModalVisible: true, // 👈 mở dialog QR
+                                            })
+                                        }
                                         checkedIcon='dot-circle-o'
                                         uncheckedIcon='circle-o'
                                     />
+
 
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Delivery Method</Text>
                                     <CheckBox
@@ -283,9 +290,9 @@ class Cart extends Component {
                                                     Alert.alert('Error', 'Please enter delivery address');
                                                     return;
                                                 }
-                                                
+
                                                 const finalTotal = total + this.state.deliveryFee;
-                                                
+
                                                 this.props.postOrder({
                                                     cart: this.props.cart,
                                                     paymentMethod: this.state.paymentMethod,
@@ -294,9 +301,9 @@ class Cart extends Component {
                                                     deliveryFee: this.state.deliveryFee,
                                                     total: finalTotal
                                                 })
-                                                .then(() => {
-                                                    this.setState({ isCheckoutModalVisible: false });
-                                                });
+                                                    .then(() => {
+                                                        this.setState({ isCheckoutModalVisible: false });
+                                                    });
                                             }}
                                         />
                                     </View>
@@ -305,11 +312,68 @@ class Cart extends Component {
                         </View>
                     </Modal>
 
+                    <Modal
+                        animationType="fade"
+                        transparent
+                        visible={this.state.isQRModalVisible}
+                        onRequestClose={() => this.setState({ isQRModalVisible: false })}
+                    >
+                        <View style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: 'rgba(0,0,0,0.8)'
+                        }}>
+                            <View style={{
+                                width: '80%',
+                                backgroundColor: 'white',
+                                borderRadius: 20,
+                                padding: 20,
+                                alignItems: 'center'
+                            }}>
+                                <Text style={{
+                                    fontSize: 22,
+                                    fontWeight: 'bold',
+                                    marginBottom: 20,
+                                    color: '#512DA8'
+                                }}>
+                                    Scan to Pay
+                                </Text>
+
+                                <Image
+                                    source={{ uri: baseUrl + 'images/payment/QRPayment.png' }}
+                                    style={{ width: 200, height: 200, marginBottom: 20 }}
+                                    resizeMode="contain"
+                                />
+
+                                <Text style={{
+                                    textAlign: 'center',
+                                    marginBottom: 20,
+                                    color: 'gray'
+                                }}>
+                                    Please scan this QR code with your banking app to complete the transfer.
+                                </Text>
+
+                                <Button
+                                    title="Close"
+                                    buttonStyle={{
+                                        backgroundColor: '#512DA8',
+                                        paddingHorizontal: 30
+                                    }}
+                                    onPress={() => this.setState({ isQRModalVisible: false })}
+                                />
+                            </View>
+                        </View>
+                    </Modal>
+
+
                     <ScannerComponent
                         visible={this.state.isScannerVisible}
                         onScanned={this.handleScan}
                         onClose={() => this.setState({ isScannerVisible: false })}
                     />
+
+
                 </View>
             );
         }
