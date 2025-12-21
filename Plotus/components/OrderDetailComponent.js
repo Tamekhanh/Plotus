@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, ScrollView, StyleSheet, Alert } from 'react-native';
+import { View, Text, FlatList, ScrollView, StyleSheet, Alert, Modal, Image } from 'react-native';
 import { Card, Icon, ListItem, Avatar, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl, imageUrl } from '../shared/baseUrl';
@@ -17,6 +17,12 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class OrderDetail extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isQRModalVisible: false
+        };
+    }
 
     render() {
         const orderId = this.props.route.params.orderId;
@@ -33,10 +39,14 @@ class OrderDetail extends Component {
         const status = order.status || 'Processing';
 
         const renderOrderItem = ({ item, index }) => {
+            const imageSource = (item.image && (item.image.startsWith('file://') || item.image.startsWith('http'))) 
+                ? { uri: item.image } 
+                : { uri: imageUrl + item.imageId + '.jpg' };
+
             return (
                 <ListItem key={index} bottomDivider>
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1, justifyContent: 'space-between' }}>
-                        <Avatar source={{ uri: imageUrl + item.imageId + '.jpg' }} />
+                        <Avatar source={imageSource} />
                     
                     <ListItem.Content>
                         <ListItem.Title>{item.name}</ListItem.Title>
@@ -86,9 +96,17 @@ class OrderDetail extends Component {
                     </View>
                     {status === 'Processing' && (
                         <View>
+                            {order.paymentMethod === 'Bank Transfer' && (
+                                <Button
+                                    title="Show Payment QR"
+                                    icon={<Icon name='qrcode' type='font-awesome' color='white' size={20} style={{ marginRight: 10 }} />}
+                                    buttonStyle={{ backgroundColor: '#28a745', marginTop: 20 }}
+                                    onPress={() => this.setState({ isQRModalVisible: true })}
+                                />
+                            )}
                             <Button
                                 title="Confirm Order"
-                                buttonStyle={{ backgroundColor: '#512DA8', marginTop: 20 }}
+                                buttonStyle={{ backgroundColor: '#512DA8', marginTop: 10 }}
                                 onPress={() => {
                                     Alert.alert(
                                         'Confirm Order',
@@ -119,6 +137,30 @@ class OrderDetail extends Component {
                         </View>
                     )}
                 </Card>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={this.state.isQRModalVisible}
+                    onRequestClose={() => this.setState({ isQRModalVisible: false })}
+                >
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.8)' }}>
+                        <View style={{ width: '80%', backgroundColor: 'white', borderRadius: 20, padding: 20, alignItems: 'center' }}>
+                            <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 20, color: '#512DA8' }}>Scan to Pay</Text>
+                            <Image
+                                source={{ uri: baseUrl + 'images/payment/QRPayment.png' }}
+                                style={{ width: 200, height: 200, marginBottom: 20 }}
+                            />
+                            <Text style={{ textAlign: 'center', marginBottom: 20, color: 'gray' }}>
+                                Please scan this QR code with your banking app to complete the transfer.
+                            </Text>
+                            <Button
+                                title="Close"
+                                buttonStyle={{ backgroundColor: '#512DA8', paddingHorizontal: 30 }}
+                                onPress={() => this.setState({ isQRModalVisible: false })}
+                            />
+                        </View>
+                    </View>
+                </Modal>
             </ScrollView>
         );
     }

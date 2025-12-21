@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, ScrollView, StyleSheet, TouchableOpacity, Modal, Alert, RefreshControl } from 'react-native';
+import { View, FlatList, Text, ScrollView, StyleSheet, TouchableOpacity, Modal, Alert, RefreshControl, Image } from 'react-native';
 import { ListItem, Avatar, SearchBar, Icon, Button, Input, CheckBox } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl, imageUrl } from '../shared/baseUrl';
 import { deleteProduct, postProduct, updateProduct, fetchProducts } from '../redux/ActionCreator';
 import ScannerComponent from './ScannerComponent';
+import * as ImagePicker from 'expo-image-picker';
 
 
 const mapStateToProps = state => {
@@ -34,6 +35,7 @@ class Menu extends Component {
             description: '',
             price: '',
             imageId: 0, // Default or placeholder
+            image: '',
             category: 'phones',
             brand: 'Apple',
             isEditing: false,
@@ -45,6 +47,38 @@ class Menu extends Component {
     handleScan = ({ type, data }) => {
         this.setState({ isScannerVisible: false, search: data.trim() });
     }
+
+    pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            this.setState({ image: result.assets[0].uri });
+        }
+    };
+
+    takePhoto = async () => {
+        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            alert("You've refused to allow this app to access your camera!");
+            return;
+        }
+
+        let result = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            this.setState({ image: result.assets[0].uri });
+        }
+    };
 
     toggleModal() {
         this.setState({ showModal: !this.state.showModal });
@@ -60,6 +94,7 @@ class Menu extends Component {
             description: '',
             price: '',
             imageId: 0,
+            image: '',
             category: 'phones',
             brand: 'Apple',
             showModal: false,
@@ -69,10 +104,11 @@ class Menu extends Component {
     }
 
     handleSubmitProduct() {
+        const imageToUse = this.state.image || this.state.imageId;
         if (this.state.isEditing) {
-            this.props.updateProduct(this.state.editingId, this.state.name, this.state.description, this.state.price, this.state.imageId, this.state.category, this.state.brand);
+            this.props.updateProduct(this.state.editingId, this.state.name, this.state.description, this.state.price, imageToUse, this.state.category, this.state.brand);
         } else {
-            this.props.postProduct(this.state.name, this.state.description, this.state.price, this.state.imageId, this.state.category, this.state.brand);
+            this.props.postProduct(this.state.name, this.state.description, this.state.price, imageToUse, this.state.category, this.state.brand);
         }
         this.resetForm();
     }
@@ -83,6 +119,7 @@ class Menu extends Component {
             description: item.description,
             price: item.price.toString(),
             imageId: item.imageId,
+            image: item.image || '',
             category: item.category,
             brand: item.brand || '',
             showModal: true,
@@ -116,13 +153,17 @@ class Menu extends Component {
     render() {
 
         const renderMenuItem = ({ item, index }) => {
+            const imageSource = (item.image && (item.image.startsWith('file://') || item.image.startsWith('http'))) 
+                ? { uri: item.image } 
+                : { uri: imageUrl + item.imageId + '.jpg' };
+
             return (
                 <ListItem key={index} bottomDivider 
                     onPress={() => this.props.navigation.navigate('ProductDetail', { productId: item.id })}
                     onLongPress={() => this.openEditModal(item)}
                 >
                     <View style={{ flexDirection: 'row', alignItems: 'center' , gap: 10, flex: 1}}>
-                        <Avatar source={{ uri: imageUrl + item.imageId + '.jpg' }} />
+                        <Avatar source={imageSource} />
                         <ListItem.Content>
                             <ListItem.Title style={{ fontWeight: 'bold' }}>{item.name}</ListItem.Title>
                             <ListItem.Subtitle numberOfLines={1}>{item.description}</ListItem.Subtitle>
@@ -307,6 +348,27 @@ class Menu extends Component {
                                     </TouchableOpacity>
                                 ))}
                             </ScrollView>
+                            
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
+                                <Button
+                                    icon={<Icon name='camera' type='font-awesome' color='white' />}
+                                    title=" Take Photo"
+                                    onPress={this.takePhoto}
+                                    buttonStyle={{ backgroundColor: '#512DA8' }}
+                                />
+                                <Button
+                                    icon={<Icon name='image' type='font-awesome' color='white' />}
+                                    title=" Gallery"
+                                    onPress={this.pickImage}
+                                    buttonStyle={{ backgroundColor: '#512DA8' }}
+                                />
+                            </View>
+                            {this.state.image ? (
+                                <View style={{ alignItems: 'center', marginBottom: 10 }}>
+                                    <Image source={{ uri: this.state.image }} style={{ width: 200, height: 200 }} />
+                                </View>
+                            ) : null}
+
                             <Input
                                 placeholder='Image URL (relative or absolute)'
                                 leftIcon={<Icon type='font-awesome' name='image' size={24} color='black' />}

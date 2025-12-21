@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, Alert, TouchableOpacity } from 'react-native';
-import { ListItem, Avatar, Button, Icon } from 'react-native-elements';
+import { View, FlatList, Text, Alert, TouchableOpacity, Modal, ScrollView, Image } from 'react-native';
+import { ListItem, Avatar, Button, Icon, Input, CheckBox } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { deleteFromCart, addToCart, decreaseFromCart, postOrder } from '../redux/ActionCreator';
 import { baseUrl, imageUrl } from '../shared/baseUrl';
@@ -17,14 +17,19 @@ const mapDispatchToProps = dispatch => ({
     deleteFromCart: (productId) => dispatch(deleteFromCart(productId)),
     addToCart: (product) => dispatch(addToCart(product)),
     decreaseFromCart: (productId) => dispatch(decreaseFromCart(productId)),
-    postOrder: (cart) => dispatch(postOrder(cart))
+    postOrder: (orderInfo) => dispatch(postOrder(orderInfo))
 })
 
 class Cart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isScannerVisible: false
+            isScannerVisible: false,
+            isCheckoutModalVisible: false,
+            paymentMethod: 'Cash',
+            deliveryMethod: 'At Store',
+            address: '',
+            deliveryFee: 0
         };
     }
 
@@ -44,10 +49,14 @@ class Cart extends Component {
     render() {
 
         const renderCartItem = ({ item, index }) => {
+            const imageSource = (item.image && (item.image.startsWith('file://') || item.image.startsWith('http'))) 
+                ? { uri: item.image } 
+                : { uri: imageUrl + item.imageId + '.jpg' };
+
             return (
                 <ListItem key={index} bottomDivider containerStyle={{ paddingVertical: 15 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, flex: 1 }}>
-                        <Avatar source={{ uri: imageUrl + item.imageId + '.jpg' }} size="medium" rounded />
+                        <Avatar source={imageSource} size="medium" rounded />
                         <ListItem.Content>
                             <ListItem.Title style={{ fontWeight: 'bold', fontSize: 16 }}>{item.name}</ListItem.Title>
                             <ListItem.Subtitle style={{ color: 'gray', marginTop: 5 }}>
@@ -120,7 +129,7 @@ class Cart extends Component {
                 }
                 return sum;
             }, 0);
-            const total = subtotal - discount;
+            const total = subtotal - discount + this.state.deliveryFee;
 
             return (
                 <View style={{ flex: 1, backgroundColor: '#f5f5f5' }}>
@@ -161,19 +170,123 @@ class Cart extends Component {
                             title="CHECKOUT"
                             buttonStyle={{ backgroundColor: '#512DA8', borderRadius: 10, paddingVertical: 12 }}
                             titleStyle={{ fontWeight: 'bold', fontSize: 18 }}
-                            onPress={() => {
-                                Alert.alert(
-                                    'Confirm Order',
-                                    'Do you want to place this order?',
-                                    [
-                                        { text: 'Cancel', style: 'cancel' },
-                                        { text: 'OK', onPress: () => this.props.postOrder(this.props.cart) }
-                                    ],
-                                    { cancelable: false }
-                                );
-                            }}
+                            onPress={() => this.setState({ isCheckoutModalVisible: true })}
                         />
                     </View>
+
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={this.state.isCheckoutModalVisible}
+                        onRequestClose={() => this.setState({ isCheckoutModalVisible: false })}
+                    >
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                            <View style={{ width: '90%', backgroundColor: 'white', borderRadius: 20, padding: 20, maxHeight: '80%' }}>
+                                <ScrollView>
+                                    <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>Checkout</Text>
+                                    
+                                    <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Payment Method</Text>
+                                    <CheckBox
+                                        title='Cash'
+                                        checked={this.state.paymentMethod === 'Cash'}
+                                        onPress={() => this.setState({ paymentMethod: 'Cash' })}
+                                        checkedIcon='dot-circle-o'
+                                        uncheckedIcon='circle-o'
+                                    />
+                                    <CheckBox
+                                        title='Bank Transfer'
+                                        checked={this.state.paymentMethod === 'Bank Transfer'}
+                                        onPress={() => this.setState({ paymentMethod: 'Bank Transfer' })}
+                                        checkedIcon='dot-circle-o'
+                                        uncheckedIcon='circle-o'
+                                    />
+
+                                    <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Delivery Method</Text>
+                                    <CheckBox
+                                        title='At Store'
+                                        checked={this.state.deliveryMethod === 'At Store'}
+                                        onPress={() => this.setState({ deliveryMethod: 'At Store', deliveryFee: 0 })}
+                                        checkedIcon='dot-circle-o'
+                                        uncheckedIcon='circle-o'
+                                    />
+                                    <CheckBox
+                                        title='Delivery'
+                                        checked={this.state.deliveryMethod === 'Delivery'}
+                                        onPress={() => this.setState({ deliveryMethod: 'Delivery', deliveryFee: 5.00 })}
+                                        checkedIcon='dot-circle-o'
+                                        uncheckedIcon='circle-o'
+                                    />
+
+                                    {this.state.deliveryMethod === 'Delivery' && (
+                                        <Input
+                                            placeholder='Enter Address'
+                                            leftIcon={{ type: 'font-awesome', name: 'map-marker' }}
+                                            onChangeText={value => this.setState({ address: value })}
+                                            value={this.state.address}
+                                        />
+                                    )}
+
+                                    <View style={{ marginTop: 20, borderTopWidth: 1, borderTopColor: '#eee', paddingTop: 10 }}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ fontSize: 16 }}>Subtotal:</Text>
+                                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>${subtotal.toFixed(2)}</Text>
+                                        </View>
+                                        {discount > 0 && (
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                                                <Text style={{ fontSize: 16, color: 'green' }}>Discount:</Text>
+                                                <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'green' }}>-${discount.toFixed(2)}</Text>
+                                            </View>
+                                        )}
+                                        {this.state.deliveryFee > 0 && (
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                                                <Text style={{ fontSize: 16 }}>Delivery Fee:</Text>
+                                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>${this.state.deliveryFee.toFixed(2)}</Text>
+                                            </View>
+                                        )}
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+                                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Total:</Text>
+                                            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#512DA8' }}>${(total + this.state.deliveryFee).toFixed(2)}</Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 30 }}>
+                                        <Button
+                                            title="Cancel"
+                                            type="outline"
+                                            buttonStyle={{ borderColor: 'red', width: 120 }}
+                                            titleStyle={{ color: 'red' }}
+                                            onPress={() => this.setState({ isCheckoutModalVisible: false })}
+                                        />
+                                        <Button
+                                            title="Confirm"
+                                            buttonStyle={{ backgroundColor: '#512DA8', width: 120 }}
+                                            onPress={() => {
+                                                if (this.state.deliveryMethod === 'Delivery' && !this.state.address) {
+                                                    Alert.alert('Error', 'Please enter delivery address');
+                                                    return;
+                                                }
+                                                
+                                                const finalTotal = total + this.state.deliveryFee;
+                                                
+                                                this.props.postOrder({
+                                                    cart: this.props.cart,
+                                                    paymentMethod: this.state.paymentMethod,
+                                                    deliveryMethod: this.state.deliveryMethod,
+                                                    address: this.state.address,
+                                                    deliveryFee: this.state.deliveryFee,
+                                                    total: finalTotal
+                                                })
+                                                .then(() => {
+                                                    this.setState({ isCheckoutModalVisible: false });
+                                                });
+                                            }}
+                                        />
+                                    </View>
+                                </ScrollView>
+                            </View>
+                        </View>
+                    </Modal>
+
                     <ScannerComponent
                         visible={this.state.isScannerVisible}
                         onScanned={this.handleScan}

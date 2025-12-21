@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, Button, Modal, Alert } from 'react-native';
+import { Text, View, ScrollView, Button, Alert } from 'react-native';
 import { Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { addToCart } from '../redux/ActionCreator';
@@ -18,11 +18,15 @@ const mapDispatchToProps = dispatch => ({
 
 function RenderProduct({ product, addToCart }) {
     if (product != null) {
+        const imageSource = (product.image && (product.image.startsWith('file://') || product.image.startsWith('http'))) 
+            ? { uri: product.image } 
+            : { uri: imageUrl + product.imageId + '.jpg' };
+
         return (
             <Card>
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Divider />
-                <Card.Image source={{ uri: imageUrl + product.imageId + '.jpg' }} style={{ resizeMode: 'center', height: 300 }} />
+                <Card.Image source={imageSource} style={{ resizeMode: 'center', height: 300 }} />
                 <Text style={{ margin: 10 }}>
                     {product.description}
                 </Text>

@@ -4,6 +4,10 @@ module.exports = [
         "date": "2024-05-20T10:30:00.000Z",
         "total": 2049.84,
         "status": "Delivered",
+        "paymentMethod": "Bank Transfer",
+        "deliveryMethod": "Delivery",
+        "address": "123 Tech Street, Silicon Valley, CA",
+        "deliveryFee": 5.00,
         "items": [
             {
                 "id": 0,
@@ -26,6 +30,10 @@ module.exports = [
         "date": "2024-05-21T14:15:00.000Z",
         "total": 376.92,
         "status": "Processing",
+        "paymentMethod": "Cash",
+        "deliveryMethod": "At Store",
+        "address": "",
+        "deliveryFee": 0,
         "items": [
             {
                 "id": 3,

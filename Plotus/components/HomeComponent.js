@@ -38,12 +38,16 @@ function RenderProductItem(props) {
     }
     else {
         if (item != null) {
+            const imageSource = (item.image && (item.image.startsWith('file://') || item.image.startsWith('http'))) 
+                ? { uri: item.image } 
+                : { uri: imageUrl + item.imageId + '.jpg' };
+
             return (
                 <Card>
                     <Card.Title>{item.name}</Card.Title>
                     <Card.Divider />
                     <View style={{ position: 'relative' }}>
-                        <Card.Image source={{ uri: imageUrl + item.imageId + '.jpg' }} resizeMode="contain" />
+                        <Card.Image source={imageSource} resizeMode="contain" />
                         {item.label ? (
                             <View style={{
                                 position: 'absolute',

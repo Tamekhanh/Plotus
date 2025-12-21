@@ -164,11 +164,15 @@ export const addOrders = (orders) => ({
     payload: orders
 });
 
-export const postOrder = (cart) => (dispatch) => {
+export const postOrder = (orderInfo) => (dispatch) => {
     const newOrder = {
         date: new Date().toISOString(),
-        items: cart,
-        total: cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0).toFixed(2),
+        items: orderInfo.cart,
+        total: orderInfo.total.toFixed(2),
+        paymentMethod: orderInfo.paymentMethod,
+        deliveryMethod: orderInfo.deliveryMethod,
+        address: orderInfo.address,
+        deliveryFee: orderInfo.deliveryFee,
         status: 'Processing'
     };
 
