@@ -173,7 +173,7 @@ export const postOrder = (orderInfo) => (dispatch, getState) => {
         deliveryMethod: orderInfo.deliveryMethod,
         address: orderInfo.address,
         deliveryFee: orderInfo.deliveryFee,
-        status: 'Processing'
+        status: 'Commplete'
     };
 
     return fetch(baseUrl + 'orders', {
@@ -229,7 +229,7 @@ export const confirmOrder = (orderId) => (dispatch) => {
     const confirmedDate = new Date().toISOString();
     return fetch(baseUrl + 'orders/' + orderId, {
         method: 'PATCH',
-        body: JSON.stringify({ confirmed: true, confirmedDate: confirmedDate, status: 'Delivered' }),
+        body: JSON.stringify({ confirmed: true, confirmedDate: confirmedDate, status: 'Commplete' }),
         headers: {
             'Content-Type': 'application/json'
         }
