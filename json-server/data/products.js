@@ -9,7 +9,7 @@ module.exports = [
     "price": "1199",
     "featured": true,
     "description": "Titanium design, A17 Pro chip, our longest optical zoom in iPhone ever.",
-    "serialNumber": "APL-IP15PM-1TB",
+    "serialNumber": "1234567890001",
     "performance": "A17 Pro chip",
     "specs": "6.7-inch Super Retina XDR, 1TB Storage",
     "quantity": 45
@@ -24,7 +24,7 @@ module.exports = [
     "price": "1299",
     "featured": true,
     "description": "Galaxy AI is here. Welcome to the era of mobile AI.",
-    "serialNumber": "SAM-S24U-512",
+    "serialNumber": "1234567890002",
     "performance": "Snapdragon 8 Gen 3",
     "specs": "6.8-inch QHD+, S Pen included",
     "quantity": 12
@@ -39,7 +39,7 @@ module.exports = [
     "price": "1299",
     "featured": false,
     "description": "Lean. Mean. M3 machine.",
-    "serialNumber": "APL-MBA15-M3",
+    "serialNumber": "1234567890003",
     "performance": "M3 Chip (8-core CPU, 10-core GPU)",
     "specs": "15.3-inch Liquid Retina, 16GB RAM, 512GB SSD",
     "quantity": 3
@@ -54,7 +54,7 @@ module.exports = [
     "price": "299",
     "featured": true,
     "description": "Distraction-free listening. Exceptional sound.",
-    "serialNumber": "SNY-XM5-BLK",
+    "serialNumber": "1234567890004",
     "performance": "Noise Cancelling Processor QN1",
     "specs": "30hr Battery, Hands-free calling",
     "quantity": 0
@@ -69,7 +69,7 @@ module.exports = [
     "price": "999",
     "featured": false,
     "description": "Thin. Light. Crushing it.",
-    "serialNumber": "APL-IPP11-M4",
+    "serialNumber": "1234567890005",
     "performance": "M4 chip",
     "specs": "11-inch Ultra Retina XDR",
     "quantity": 8
@@ -84,7 +84,7 @@ module.exports = [
     "price": "699",
     "featured": false,
     "description": "Powerful, helpful, and an amazing camera.",
-    "serialNumber": "GGL-PX8-128",
+    "serialNumber": "1234567890006",
     "performance": "Google Tensor G3",
     "specs": "6.2-inch Actua display, 128GB",
     "quantity": 25
@@ -99,7 +99,7 @@ module.exports = [
     "price": "499",
     "featured": true,
     "description": "Experience lightning fast loading with an ultra-high speed SSD.",
-    "serialNumber": "SNY-PS5-DSK",
+    "serialNumber": "1234567890007",
     "performance": "AMD Zen 2",
     "specs": "825GB SSD, 4K 120Hz",
     "quantity": 2
@@ -114,7 +114,7 @@ module.exports = [
     "price": "349",
     "featured": false,
     "description": "The official camera of fun.",
-    "serialNumber": "GPR-H12-BLK",
+    "serialNumber": "1234567890008",
     "performance": "HyperSmooth 6.0",
     "specs": "5.3K Video, Waterproof",
     "quantity": 15
@@ -129,7 +129,7 @@ module.exports = [
     "price": "949",
     "featured": false,
     "description": "Our most powerful HEPA cordless vacuum.",
-    "serialNumber": "DYS-G5-DET",
+    "serialNumber": "1234567890009",
     "performance": "262AW Suction",
     "specs": "70 min run time, Fluffy Optic cleaner head",
     "quantity": 4
@@ -144,7 +144,7 @@ module.exports = [
     "price": "399",
     "featured": false,
     "description": "Smarter. Brighter. Mightier.",
-    "serialNumber": "APL-AWS9-45",
+    "serialNumber": "1234567890010",
     "performance": "S9 SiP",
     "specs": "45mm Aluminum, Always-On Retina",
     "quantity": 0
@@ -159,7 +159,7 @@ module.exports = [
     "price": "1099",
     "featured": false,
     "description": "Double Up.",
-    "serialNumber": "DJI-AIR3-FLY",
+    "serialNumber": "1234567890011",
     "performance": "Dual-Camera System",
     "specs": "46-min Flight Time, Omnidirectional Obstacle Sensing",
     "quantity": 6
@@ -174,7 +174,7 @@ module.exports = [
     "price": "199",
     "featured": false,
     "description": "Dedicated to handheld play.",
-    "serialNumber": "NTD-SWL-YLW",
+    "serialNumber": "1234567890012",
     "performance": "NVIDIA Tegra",
     "specs": "5.5-inch touch screen, Integrated controls",
     "quantity": 50
@@ -189,7 +189,7 @@ module.exports = [
     "price": "1199",
     "featured": false,
     "description": "Iconic design. Now even more powerful.",
-    "serialNumber": "DEL-XPS13-PLS",
+    "serialNumber": "1234567890013",
     "performance": "Intel Core Ultra 7",
     "specs": "13.4 FHD+, 16GB RAM, 512GB SSD",
     "quantity": 1
@@ -204,7 +204,7 @@ module.exports = [
     "price": "99",
     "featured": false,
     "description": "Performance Wireless Mouse.",
-    "serialNumber": "LOG-MXM3S-GRY",
+    "serialNumber": "1234567890014",
     "performance": "8000 DPI Sensor",
     "specs": "Quiet Clicks, MagSpeed Scrolling",
     "quantity": 100

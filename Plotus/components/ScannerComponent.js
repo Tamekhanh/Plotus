@@ -43,7 +43,7 @@ export default function ScannerComponent({ onScanned, onClose, visible }) {
             facing="back"
             onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
             barcodeScannerSettings={{
-                barcodeTypes: ["qr", "ean13", "ean8", "upc_e", "code128", "code39", "pdf417", "aztec", "datamatrix"],
+                barcodeTypes: ["ean13", "ean8", "upc_e", "code128", "code39", "pdf417"],
             }}
         >
           <View style={styles.buttonContainer}>

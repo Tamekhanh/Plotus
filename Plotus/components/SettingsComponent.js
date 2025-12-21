@@ -53,7 +53,7 @@ class Settings extends Component {
             <View style={styles.container}>
                 <Text style={styles.title}>Server Settings</Text>
                 <Input
-                    placeholder='Enter Server IPv4'
+                    placeholder='Enter New Server IPv4'
                     leftIcon={{ type: 'font-awesome', name: 'server' }}
                     onChangeText={value => this.setState({ ip: value })}
                     value={this.state.ip}

@@ -284,24 +284,40 @@ export const cancelOrder = (orderId) => (dispatch) => {
     });
 };
 
-export const postProduct = (name, description, price, image, category, brand) => (dispatch) => {
-    const newProduct = {
-        name: name,
-        description: description,
-        price: price,
-        image: image,
-        category: category,
-        brand: brand,
-        label: '',
-        featured: false
-    };
+export const postProduct = (name, description, price, image, category, brand, quantity) => (dispatch) => {
+    
+    return fetch(baseUrl + 'products')
+    .then(response => response.json())
+    .then(products => {
+        let maxSerial = 1234567890000;
+        products.forEach(p => {
+            if (p.serialNumber && !isNaN(p.serialNumber)) {
+                const sn = parseInt(p.serialNumber);
+                if (sn > maxSerial) maxSerial = sn;
+            }
+        });
+        const nextSerial = (maxSerial + 1).toString();
 
-    return fetch(baseUrl + 'products', {
-        method: 'POST',
-        body: JSON.stringify(newProduct),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        const newProduct = {
+            name: name,
+            description: description,
+            price: price,
+            image: image,
+            category: category,
+            brand: brand,
+            quantity: quantity,
+            label: '',
+            featured: false,
+            serialNumber: nextSerial
+        };
+
+        return fetch(baseUrl + 'products', {
+            method: 'POST',
+            body: JSON.stringify(newProduct),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
     })
     .then(response => {
         if (response.ok) {
