@@ -31,7 +31,14 @@
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
         }
-      ]
+      ],
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Allow $(PRODUCT_NAME) to access your calendar"
+        }
+      ],
+      "expo-notifications"
     ]
   }
 }

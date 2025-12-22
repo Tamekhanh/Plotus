@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { Card, Button, Icon } from 'react-native-elements';
+import { View, Text, ScrollView, StyleSheet, FlatList } from 'react-native';
+import { Card, Button, Icon, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchPromotions, fetchPartners } from '../redux/ActionCreator';
-import { baseUrl, imageUrl,partnerImageUrl, promotionImageUrl } from '../shared/baseUrl';
+import { fetchProducts, fetchPromotions, fetchPartners, fetchOrders, fetchNotifications } from '../redux/ActionCreator';
+import { baseUrl } from '../shared/baseUrl';
+import Notification from './NotificationComponent';
 
 const mapStateToProps = state => {
     return {
         products: state.products,
         promotions: state.promotions,
-        partners: state.partners
+        partners: state.partners,
+        orders: state.orders,
+        notifications: state.notifications
     }
 }
 
 const mapDispatchToProps = dispatch => ({
     fetchProducts: () => dispatch(fetchProducts()),
     fetchPromotions: () => dispatch(fetchPromotions()),
-    fetchPartners: () => dispatch(fetchPartners())
+    fetchPartners: () => dispatch(fetchPartners()),
+    fetchOrders: () => dispatch(fetchOrders()),
+    fetchNotifications: () => dispatch(fetchNotifications())
 })
 
 
@@ -31,9 +36,38 @@ class Home extends Component {
         this.props.fetchProducts();
         this.props.fetchPromotions();
         this.props.fetchPartners();
+        this.props.fetchOrders();
+        this.props.fetchNotifications();
     }
 
     render() {
+        // Sales by Shift (Today's Sales)
+        const today = new Date().toISOString().split('T')[0];
+        const todayOrders = this.props.orders.orders.filter(order => 
+            order.date && order.date.startsWith(today)
+        );
+        const todaySales = todayOrders.reduce((sum, order) => sum + (parseFloat(order.total) || 0), 0);
+
+        // Best Selling Products
+        const productSales = {};
+        this.props.orders.orders.forEach(order => {
+            if (order.items) {
+                order.items.forEach(item => {
+                    if (productSales[item.name]) {
+                        productSales[item.name] += item.quantity;
+                    } else {
+                        productSales[item.name] = item.quantity;
+                    }
+                });
+            }
+        });
+        const sortedProducts = Object.entries(productSales)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5);
+
+        // Notifications
+        const notifications = this.props.notifications.notifications;
+
         return (
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.headerContainer}>
@@ -78,6 +112,39 @@ class Home extends Component {
                         />
                     </View>
                 </View>
+
+                {/* Sales by Shift */}
+                <Card>
+                    <Card.Title>Sales by Shift (Today)</Card.Title>
+                    <Card.Divider/>
+                    <View style={styles.statsRow}>
+                        <Text style={styles.statsLabel}>Total Sales:</Text>
+                        <Text style={styles.statsValue}>${todaySales.toFixed(2)}</Text>
+                    </View>
+                    <View style={styles.statsRow}>
+                        <Text style={styles.statsLabel}>Orders Count:</Text>
+                        <Text style={styles.statsValue}>{todayOrders.length}</Text>
+                    </View>
+                </Card>
+
+                {/* Best Selling Products */}
+                <Card>
+                    <Card.Title>Best Selling Products</Card.Title>
+                    <Card.Divider/>
+                    {sortedProducts.length > 0 ? (
+                        sortedProducts.map((item, index) => (
+                            <View key={index} style={styles.bestSellerRow}>
+                                <Text style={styles.productName}>{index + 1}. {item[0]}</Text>
+                                <Text style={styles.productQty}>{item[1]} sold</Text>
+                            </View>
+                        ))
+                    ) : (
+                        <Text>No sales data available.</Text>
+                    )}
+                </Card>
+
+                {/* Internal Notifications */}
+                <Notification notifications={notifications} />
 
                 <Card>
                     <Card.Title>Quick Stats</Card.Title>
@@ -141,7 +208,34 @@ const styles = StyleSheet.create({
     statsRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 5
+        marginVertical: 5,
+        alignItems: 'center'
+    },
+    statsLabel: {
+        fontSize: 16,
+        color: '#666'
+    },
+    statsValue: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333'
+    },
+    bestSellerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee'
+    },
+    productName: {
+        fontSize: 14,
+        color: '#333',
+        flex: 1
+    },
+    productQty: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#512DA8'
     }
 });
 

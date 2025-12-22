@@ -400,3 +400,39 @@ export const updateProduct = (productId, name, description, price, image, catego
         alert('Your product could not be updated\nError: ' + error.message);
     });
 };
+
+export const fetchNotifications = () => (dispatch) => {
+    dispatch(notificationsLoading());
+
+    return fetch(baseUrl + 'notifications')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(notifications => dispatch(addNotifications(notifications)))
+        .catch(error => dispatch(notificationsFailed(error.message)));
+};
+
+export const notificationsLoading = () => ({
+    type: ActionTypes.NOTIFICATIONS_LOADING
+});
+
+export const notificationsFailed = (errmess) => ({
+    type: ActionTypes.NOTIFICATIONS_FAILED,
+    payload: errmess
+});
+
+export const addNotifications = (notifications) => ({
+    type: ActionTypes.ADD_NOTIFICATIONS,
+    payload: notifications
+});
