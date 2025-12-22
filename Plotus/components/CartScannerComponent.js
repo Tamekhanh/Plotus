@@ -7,20 +7,29 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
+  FlatList,
+  Vibration
 } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
+import { CheckBox } from 'react-native-elements';
+import * as Haptics from 'expo-haptics';
 
-export default function ScannerComponent({ onScanned, onClose, visible }) {
+export default function CartScannerComponent({ onScanned, onClose, visible, products }) {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [torchOn, setTorchOn] = useState(false);
   const [facing, setFacing] = useState('back');
   const [manualVisible, setManualVisible] = useState(false);
   const [manualValue, setManualValue] = useState('');
+  const [continuousScan, setContinuousScan] = useState(false);
+  const [scannedItems, setScannedItems] = useState([]);
 
   useEffect(() => {
-    if (visible) setScanned(false);
+    if (visible) {
+        setScanned(false);
+        setScannedItems([]);
+    }
   }, [visible]);
 
   if (!permission) return <View />;
@@ -45,14 +54,52 @@ export default function ScannerComponent({ onScanned, onClose, visible }) {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    onScanned({ type, data });
+    
+    if (continuousScan) {
+        const scannedData = data.trim();
+        const product = products?.find(p => p.id.toString() === scannedData || p.serialNumber === scannedData);
+        
+        if (product) {
+            setScannedItems(prev => [{ ...product, scanId: Date.now() }, ...prev]);
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            Vibration.vibrate(100);
+        }
+        
+        onScanned({ type, data, continuous: true });
+        
+        // Reset scanned after delay to allow next scan
+        setTimeout(() => {
+            setScanned(false);
+        }, 1500);
+    } else {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        Vibration.vibrate(100);
+        onScanned({ type, data, continuous: false });
+    }
   };
 
   const submitManual = () => {
     if (!manualValue.trim()) return;
     setManualVisible(false);
     setScanned(true);
-    onScanned({ type: 'manual', data: manualValue.trim() });
+    
+    if (continuousScan) {
+         const scannedData = manualValue.trim();
+         const product = products?.find(p => p.id.toString() === scannedData || p.serialNumber === scannedData);
+         if (product) {
+             setScannedItems(prev => [{ ...product, scanId: Date.now() }, ...prev]);
+             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+             Vibration.vibrate(100);
+         }
+         onScanned({ type: 'manual', data: manualValue.trim(), continuous: true });
+         setTimeout(() => {
+             setScanned(false);
+         }, 1500);
+    } else {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        Vibration.vibrate(100);
+        onScanned({ type: 'manual', data: manualValue.trim(), continuous: false });
+    }
     setManualValue('');
   };
 
@@ -94,18 +141,50 @@ export default function ScannerComponent({ onScanned, onClose, visible }) {
           }}
         >
           <View style={styles.overlay}>
-                      <View style={styles.scanFrame}>
-                          <View style={styles.scanLine} />
-                      </View>
+            <View style={styles.scanFrame}>
+                <View style={styles.scanLine} />
+            </View>
+            
+            {scannedItems.length > 0 && (
+                <View style={styles.historyContainer}>
+                    <FlatList
+                        data={scannedItems}
+                        keyExtractor={item => item.scanId.toString()}
+                        renderItem={({ item }) => (
+                            <View style={styles.productCard}>
+                                <View style={styles.productInfo}>
+                                    <Text style={styles.productName}>{item.name}</Text>
+                                    <Text style={styles.productDetail}>ID: {item.id}</Text>
+                                    <Text style={styles.productDetail}>Barcode: {item.serialNumber || 'N/A'}</Text>
+                                </View>
+                                <View style={styles.plusOneBadge}>
+                                    <Text style={styles.plusOneText}>+1</Text>
+                                </View>
+                            </View>
+                        )}
+                        style={styles.historyList}
+                        contentContainerStyle={{ paddingBottom: 10 }}
+                    />
+                </View>
+            )}
           </View>
 
-          <View style={styles.bottomHint}>
-            <Text style={styles.hintText}>
-              Place the barcode in the slot to scan.
-            </Text>
-          </View>
+          <View style={styles.bottomControls}>
+             <CheckBox
+                title='Continuous Scan'
+                checked={continuousScan}
+                onPress={() => setContinuousScan(!continuousScan)}
+                containerStyle={styles.checkboxContainer}
+                textStyle={styles.checkboxText}
+                checkedColor='#4ade80'
+             />
+          
+            <View style={styles.bottomHint}>
+                <Text style={styles.hintText}>
+                Place the barcode in the slot to scan.
+                </Text>
+            </View>
 
-          <View style={styles.closeWrap}>
             <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
               <Text style={styles.closeText}>Close</Text>
             </TouchableOpacity>
@@ -177,23 +256,88 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
   },
-
-  bottomHint: {
+  
+  historyContainer: {
     position: 'absolute',
-    bottom: 80,
+    top: '40%',
+    width: '100%',
+    height: '45%',
+    alignItems: 'center',
+  },
+  historyList: {
+    width: '100%',
+  },
+  productCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    padding: 15,
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '85%',
+    alignSelf: 'center',
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  productInfo: {
+    flex: 1,
+  },
+  productName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  productDetail: {
+    fontSize: 14,
+    color: '#666',
+  },
+  plusOneBadge: {
+    backgroundColor: '#4ade80',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  plusOneText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+
+  bottomControls: {
+    position: 'absolute',
+    bottom: 0,
     left: 0,
     right: 0,
     alignItems: 'center',
+    paddingBottom: 20,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    width: '100%'
+  },
+  
+  checkboxContainer: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    marginBottom: 10,
+  },
+  checkboxText: {
+    color: 'white',
+    fontWeight: 'bold'
+  },
+
+  bottomHint: {
+    marginBottom: 15,
   },
   hintText: { color: 'white', fontSize: 16 },
 
-  closeWrap: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-  },
   closeBtn: {
     backgroundColor: 'white',
     paddingHorizontal: 24,

@@ -4,7 +4,7 @@ import { ListItem, Avatar, Button, Icon, Input, CheckBox } from 'react-native-el
 import { connect } from 'react-redux';
 import { deleteFromCart, addToCart, decreaseFromCart, postOrder } from '../redux/ActionCreator';
 import { baseUrl, imageUrl } from '../shared/baseUrl';
-import ScannerComponent from './ScannerComponent';
+import CartScannerComponent from './CartScannerComponent';
 
 const mapStateToProps = state => {
     return {
@@ -34,8 +34,10 @@ class Cart extends Component {
         };
     }
 
-    handleScan = ({ type, data }) => {
-        this.setState({ isScannerVisible: false });
+    handleScan = ({ type, data, continuous }) => {
+        if (!continuous) {
+            this.setState({ isScannerVisible: false });
+        }
         const scannedData = data.trim();
         const product = this.props.products.products.find(p => p.id.toString() === scannedData || p.serialNumber === scannedData);
 
@@ -50,9 +52,11 @@ class Cart extends Component {
             }
 
             this.props.addToCart(product);
-            Alert.alert('Success', `Added ${product.name} to cart!`);
+            if (!continuous) {
+                Alert.alert('Success', `Added ${product.name} to cart!`);
+            }
         } else {
-            Alert.alert('Error', 'Product not found!');
+            Alert.alert('Product not found!');
         }
     }
 
@@ -132,10 +136,11 @@ class Cart extends Component {
                         buttonStyle={{ backgroundColor: '#512DA8', marginTop: 20, paddingHorizontal: 30 }}
                         onPress={() => this.setState({ isScannerVisible: true })}
                     />
-                    <ScannerComponent
+                    <CartScannerComponent
                         visible={this.state.isScannerVisible}
                         onScanned={this.handleScan}
                         onClose={() => this.setState({ isScannerVisible: false })}
+                        products={this.props.products.products}
                     />
                 </View>
             );
@@ -367,10 +372,11 @@ class Cart extends Component {
                     </Modal>
 
 
-                    <ScannerComponent
+                    <CartScannerComponent
                         visible={this.state.isScannerVisible}
                         onScanned={this.handleScan}
                         onClose={() => this.setState({ isScannerVisible: false })}
+                        products={this.props.products.products}
                     />
 
 
