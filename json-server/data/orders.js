@@ -1,6 +1,10 @@
 module.exports = [
     {
         "id": 1,
+        "customerName": "John Doe",
+        "email": "johndoe@example.com",
+        "phone": "0123456789",
+        "taxCode": "123456789",
         "date": "2024-05-20T10:30:00.000Z",
         "total": 2049.84,
         "status": "Commplete",

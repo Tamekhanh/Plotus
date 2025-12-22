@@ -41,6 +41,7 @@ class Order extends Component {
                         </View>
                         <Card.Divider />
                         <Text style={{ margin: 10 }}>Date: {new Date(item.date).toLocaleString()}</Text>
+                        {item.customerName && <Text style={{ margin: 10 }}>Customer: {item.customerName}</Text>}
                         <Text style={{ margin: 10, fontWeight: 'bold' }}>Total: ${item.total}</Text>
                         <Text style={{ margin: 10, color: 'blue' }}>Status: {item.status || 'Processing'}</Text>
                         <Text style={{ margin: 10, color: 'gray' }}>{item.items.length} Items</Text>

@@ -75,6 +75,12 @@ class OrderDetail extends Component {
                                 Confirmed: {new Date(order.confirmedDate).toLocaleString()}
                             </Text>
                         )}
+                        
+                        {order.customerName && <Text style={{ marginTop: 5 }}>Customer: {order.customerName}</Text>}
+                        {order.email && <Text>Email: {order.email}</Text>}
+                        {order.phone && <Text>Phone: {order.phone}</Text>}
+                        {order.taxCode && <Text>Tax Code: {order.taxCode}</Text>}
+                        {order.address && <Text>Address: {order.address}</Text>}
                     </View>
                     <Card.Divider />
                     <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10 }}>Items:</Text>

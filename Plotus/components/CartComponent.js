@@ -30,8 +30,28 @@ class Cart extends Component {
             paymentMethod: 'Cash',
             deliveryMethod: 'At Store',
             address: '',
-            deliveryFee: 0
+            deliveryFee: 0,
+            customerName: '',
+            email: '',
+            phone: '',
+            taxCode: ''
         };
+    }
+
+    resetState = () => {
+        this.setState({
+            isScannerVisible: false,
+            isCheckoutModalVisible: false,
+            isQRModalVisible: false,
+            paymentMethod: 'Cash',
+            deliveryMethod: 'At Store',
+            address: '',
+            deliveryFee: 0,
+            customerName: '',
+            email: '',
+            phone: '',
+            taxCode: ''
+        });
     }
 
     handleScan = ({ type, data, continuous }) => {
@@ -207,7 +227,32 @@ class Cart extends Component {
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
                             <View style={{ width: '90%', backgroundColor: 'white', borderRadius: 20, padding: 20, maxHeight: '80%' }}>
                                 <ScrollView>
-                                    <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>Checkout</Text>
+                                    <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Customer Info</Text>
+                                    <Input
+                                        placeholder='Name'
+                                        leftIcon={{ type: 'font-awesome', name: 'user' }}
+                                        onChangeText={value => this.setState({ customerName: value })}
+                                        value={this.state.customerName}
+                                    />
+                                    <Input
+                                        placeholder='Email'
+                                        leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+                                        onChangeText={value => this.setState({ email: value })}
+                                        value={this.state.email}
+                                    />
+                                    <Input
+                                        placeholder='Phone'
+                                        leftIcon={{ type: 'font-awesome', name: 'phone' }}
+                                        onChangeText={value => this.setState({ phone: value })}
+                                        value={this.state.phone}
+                                        keyboardType='phone-pad'
+                                    />
+                                    <Input
+                                        placeholder='Tax Code'
+                                        leftIcon={{ type: 'font-awesome', name: 'file-text-o' }}
+                                        onChangeText={value => this.setState({ taxCode: value })}
+                                        value={this.state.taxCode}
+                                    />
 
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>Payment Method</Text>
                                     <CheckBox
@@ -247,7 +292,7 @@ class Cart extends Component {
                                         uncheckedIcon='circle-o'
                                     />
 
-                                    {this.state.deliveryMethod === 'Delivery' && (
+                                    {(this.state.deliveryMethod === 'Delivery' || this.state.customerName !== '') && (
                                         <Input
                                             placeholder='Enter Address'
                                             leftIcon={{ type: 'font-awesome', name: 'map-marker' }}
@@ -291,9 +336,11 @@ class Cart extends Component {
                                             title="Confirm"
                                             buttonStyle={{ backgroundColor: '#512DA8', width: 120 }}
                                             onPress={() => {
-                                                if (this.state.deliveryMethod === 'Delivery' && !this.state.address) {
-                                                    Alert.alert('Error', 'Please enter delivery address');
-                                                    return;
+                                                if (this.state.deliveryMethod === 'Delivery') {
+                                                    if (!this.state.address || !this.state.customerName || !this.state.phone) {
+                                                        Alert.alert('Error', 'Please enter Name, Phone and Address for delivery');
+                                                        return;
+                                                    }
                                                 }
 
                                                 const finalTotal = total + this.state.deliveryFee;
@@ -304,10 +351,14 @@ class Cart extends Component {
                                                     deliveryMethod: this.state.deliveryMethod,
                                                     address: this.state.address,
                                                     deliveryFee: this.state.deliveryFee,
+                                                    customerName: this.state.customerName || 'Retail customers',
+                                                    email: this.state.email,
+                                                    phone: this.state.phone,
+                                                    taxCode: this.state.taxCode,
                                                     total: finalTotal
                                                 })
                                                     .then(() => {
-                                                        this.setState({ isCheckoutModalVisible: false });
+                                                        this.resetState();
                                                     });
                                             }}
                                         />

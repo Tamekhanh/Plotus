@@ -166,6 +166,10 @@ export const addOrders = (orders) => ({
 
 export const postOrder = (orderInfo) => (dispatch, getState) => {
     const newOrder = {
+        customerName: orderInfo.customerName ?? 'Retail customers',
+        email: orderInfo.email,
+        phone: orderInfo.phone,
+        taxCode: orderInfo.taxCode,
         date: new Date().toISOString(),
         items: orderInfo.cart,
         total: orderInfo.total.toFixed(2),
